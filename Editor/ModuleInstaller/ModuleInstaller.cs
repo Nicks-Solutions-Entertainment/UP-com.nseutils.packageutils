@@ -121,7 +121,7 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
 
             if (EditorUtility.DisplayDialog("NSEUtils Module Installer", "Unity 6 does not handle Auto-install without Restart, but you can chack external dependencies after import packages by cliking in " +
                 "'Tools>NSEUtils>Verify external Package Dependencies'.\n Restart Unity to force instal?", "OK", "Cancel"))
-                EditorApplication.Exit(1);
+                EditorApplication.OpenProject(Directory.GetCurrentDirectory());
 
             //HandleResolveExternalDependencies();
 
