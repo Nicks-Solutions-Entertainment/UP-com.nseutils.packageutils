@@ -105,20 +105,21 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
             //EditorApplication.update -= OnEditorStateUpdated;
 
         }
-
+        static List<string> ExternalRegisteringPackages = new List<string>();
         private static void OnRegisteringPackages(PackageRegistrationEventArgs args)
         {
             //Debug.Log($"OnRegisteringPackages");
-            //foreach (var addedPackage in args.added)
-            //{
-            //    if (addedPackage.name.CompareTo(CORE_PACKAGE_NAME) == 0)
-            //    {
-            //        Debug.Log($"Installing  Core on path: {addedPackage.resolvedPath}");
-            //        HandleResolveExternalDependencies();
-            //    }
-            //    //Debug.Log($"OnRegisteringPackages.added:{added.name}");
+            foreach (var addedPackage in args.added)
+            {
+               if (addedPackage.source== PackageSource.Git)
+               {
+                   Debug.Log($"Installing Git Package on path: {addedPackage.resolvedPath}");
+                    //HandleResolveExternalDependencies();
+                    ExternalRegisteringPackages.Add(addedPackage.name);
+               }
+               //Debug.Log($"OnRegisteringPackages.added:{added.name}");
 
-            //}
+            }
 
         }
 
@@ -203,6 +204,7 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
                 {
                     Debug.LogError("Falha ao carregar o dependecias.");
                 }
+                ExternalRegisteringPackages = new();
             }
         }
 
