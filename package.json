@@ -1,0 +1,26 @@
+{
+  "name": "com.nseutils.packageutils",
+  "version": "1.0.0-pre.1",
+  "displayName": "NSE Utils - PackageUtils",
+  "description": " A Unity Custom Pakage for manage dependencies of another external custom packages such as Git packages that depends of another Git package per exemple.",
+  "unity": "2022.3",
+  "documentationUrl": "",
+  "changelogUrl": "",
+  "licensesUrl": "",
+  "keywords": [
+    "NSE",
+    "NSE Creative Studios",
+    "NSE Utils",
+    "NSEUtils",
+    "NSUtils",
+    "NS Utils"
+  ],
+  "author": {
+    "name": "NSE Creative Studios",
+    "email": "",
+    "url": ""
+  },
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.0.2"
+  }
+}
