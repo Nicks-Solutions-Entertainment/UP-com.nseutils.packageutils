@@ -35,7 +35,7 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
             CompilationPipeline.assemblyCompilationFinished -= OnAssemblyCompilationFinished;
 
             //CompilationPipeline.compilationStarted += OnAssemblyCompilationStarted;
-            //CompilationPipeline.assemblyCompilationFinished += OnAssemblyCompilationFinished;
+            CompilationPipeline.assemblyCompilationFinished += OnAssemblyCompilationFinished;
             //Tst();
             CheckCoreDependencies();
             HandleResolveExternalDependencies();
@@ -49,9 +49,9 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
         //}
         private static void OnAssemblyCompilationFinished(string assemblyName, CompilerMessage[] messages)
         {
+            if(assemblyName.CompareTo("com.nseutils.packageutils")!=0)return;
             bool hasErrors = false;
-
-            // Verifica se houve erros na compilação
+            // Verifica se houve erros na compilacao
             foreach (var message in messages)
             {
                 if (message.type == CompilerMessageType.Error)
@@ -60,18 +60,6 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
                     break;
                 }
             }
-
-            // Log de aviso ou execução de métodos quando houver erro
-            if (hasErrors)
-            {
-                //Debug.LogWarning($"A compilation error occurred in assembly: {assemblyName}");
-                // Executa um método ou inicializa algum processo, se necessário
-
-            }
-            else
-            {
-                // Verifica dependências e realiza instalações adicionais, se necessário
-            }
             HandleResolveExternalDependencies(hasErrors);
             CompilationPipeline.assemblyCompilationFinished += OnAssemblyCompilationFinished;
 
@@ -79,7 +67,7 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
 
         static void ForceResolveExternalDependencies() => HandleResolveExternalDependencies(true);
 
-        [MenuItem("Realities Dev Tools/Verificar Dependencias do Core")]
+        [MenuItem("Tools/NSEUtils/Verify external Package Dependencies")]
         static void ResolveExternalDependencies() => HandleResolveExternalDependencies();
         static async void HandleResolveExternalDependencies(bool forceResolve = false)
         {
