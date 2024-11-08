@@ -49,7 +49,10 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
         //}
         private static void OnAssemblyCompilationFinished(string assemblyName, CompilerMessage[] messages)
         {
-            if(assemblyName.CompareTo("com.nseutils.packageutils")!=0)return;
+            if (assemblyName.CompareTo("com.nseutils.packageutils") != 0) return;
+            else if( !ExternalRegisteringPackages.Contains(assemblyName) )return;
+
+            Debug.Log($"OnAssemblyCompilationFinished:{assemblyName}");
             bool hasErrors = false;
             // Verifica se houve erros na compilacao
             foreach (var message in messages)
