@@ -117,7 +117,7 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
                if (addedPackage.source== PackageSource.Git)
                {
                    Debug.Log($"Installing Git Package on path: {addedPackage.resolvedPath}");
-                    //HandleResolveExternalDependencies();
+                    HandleResolveExternalDependencies(true);
                     ExternalRegisteringPackages.Add(addedPackage.name);
                }
                //Debug.Log($"OnRegisteringPackages.added:{added.name}");
