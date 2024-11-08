@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor.Compilation;
 using System.Threading.Tasks;
+using UnityEditor.EditorTools;
 
 
 namespace NSEUtils.PackageUtils.ModuleInstaller
@@ -50,7 +51,7 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
         private static void OnAssemblyCompilationFinished(string assemblyName, CompilerMessage[] messages)
         {
             if (assemblyName.CompareTo("com.nseutils.packageutils") != 0) return;
-            else if( !ExternalRegisteringPackages.Contains(assemblyName) )return;
+            else if (!ExternalRegisteringPackages.Contains(assemblyName)) return;
 
             Debug.Log($"OnAssemblyCompilationFinished:{assemblyName}");
             bool hasErrors = false;
@@ -102,8 +103,9 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
             EditorApplication.delayCall -= OnEditorStateUpdated;
             EditorApplication.delayCall += OnEditorStateUpdated;
 
-            Events.registeringPackages -= OnRegisteringPackages;
-            Events.registeringPackages += OnRegisteringPackages;
+            Events.registeredPackages -= OnRegisteringPackages;
+            //Events.registeringPackages += OnRegisteringPackages;
+            Events.registeredPackages += OnRegisteringPackages;
             //EditorApplication.update += OnEditorStateUpdated;
             //EditorApplication.update -= OnEditorStateUpdated;
 
@@ -111,16 +113,28 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
         static List<string> ExternalRegisteringPackages = new List<string>();
         private static void OnRegisteringPackages(PackageRegistrationEventArgs args)
         {
+#if UNITY_6_OR_NEWER
+ 
+#else
+
+#endif
+
+            if (EditorUtility.DisplayDialog("NSEUtils Module Installer", "Unity 6 does not handle Auto-install without Restart, but you can chack external dependencies after import packages by cliking in " +
+                "'Tools>NSEUtils>Verify external Package Dependencies'.\n Restart Unity to force instal?", "OK", "Cancel"))
+                EditorApplication.Exit(1);
+
+            //HandleResolveExternalDependencies();
+
             //Debug.Log($"OnRegisteringPackages");
             foreach (var addedPackage in args.added)
             {
-               if (addedPackage.source== PackageSource.Git)
-               {
-                   Debug.Log($"Installing Git Package on path: {addedPackage.resolvedPath}");
+                if (addedPackage.source == PackageSource.Git)
+                {
+                    Debug.Log($"Installing Git Package on path: {addedPackage.resolvedPath}");
                     HandleResolveExternalDependencies(true);
                     ExternalRegisteringPackages.Add(addedPackage.name);
-               }
-               //Debug.Log($"OnRegisteringPackages.added:{added.name}");
+                }
+                //Debug.Log($"OnRegisteringPackages.added:{added.name}");
 
             }
 
