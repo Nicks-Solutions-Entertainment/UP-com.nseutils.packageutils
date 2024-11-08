@@ -114,15 +114,10 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
         private static void OnRegisteringPackages(PackageRegistrationEventArgs args)
         {
 #if UNITY_6_OR_NEWER
- 
-#else
-
-#endif
-
-            if (EditorUtility.DisplayDialog("NSEUtils Module Installer", "Unity 6 does not handle Auto-install without Restart, but you can chack external dependencies after import packages by cliking in " +
+    if (EditorUtility.DisplayDialog("NSEUtils Module Installer", "Unity 6 does not handle Auto-install without Restart, but you can chack external dependencies after import packages by cliking in " +
                 "'Tools>NSEUtils>Verify external Package Dependencies'.\n Restart Unity to force instal?", "OK", "Cancel"))
                 EditorApplication.OpenProject(Directory.GetCurrentDirectory());
-
+#else
             //HandleResolveExternalDependencies();
 
             //Debug.Log($"OnRegisteringPackages");
@@ -137,6 +132,11 @@ namespace NSEUtils.PackageUtils.ModuleInstaller
                 //Debug.Log($"OnRegisteringPackages.added:{added.name}");
 
             }
+#endif
+
+
+
+
 
         }
 
